@@ -70,7 +70,7 @@ def switchBoardValue(x, y, gameboard):
         xToTest = x + neighborXDif
         for neighborYDif in neighbors:
             yToTest = y + neighborYDif
-            if isInGameboard(xToTest, yToTest, gameboard):
+            if isInGameboard(xToTest, yToTest, gameboard) and not (xToTest == 0 and yToTest == 0):
                 gameboard[yToTest][xToTest] = False if gameboard[yToTest][xToTest] else True
     return gameboard
 
