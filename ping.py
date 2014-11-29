@@ -2,6 +2,7 @@
 
 boardConfig = {'width': 0, 'height': 0}
 gameboard = []
+printRules = []
 
 """
 
@@ -22,17 +23,6 @@ def createGameBoard(width, height, value):
 
     return gameboard
 
-"""
-
-PING FUNCTIONS
-
-"""
-
-"""
-
-PONG GAME
-
-"""
 
 def setBoard():
     """ Prompt the user to set the width and height of the board
@@ -43,18 +33,104 @@ def setBoard():
 
     return {'width': width, 'height': height}
 
+def isInGameboard(x, y, gameboard):
+    """ Check if the given coordinates are in the gameboard
+    isInGameboard(int, int, [][]) -> Boolean
+    """
+    return 0 <= x < len(gameboard[0]) and 0 <= y < len(gameboard)
+
+"""
+
+PONG GAME
+
+"""
+
+def setPong():
+    """ Set pong game
+    setPong() ->
+    """
+    global boardConfig, gameboard, printRules
+    boardConfig = setBoard()
+    gameboard = createGameBoard(boardConfig['width'], boardConfig['height'], False)
+    printRules = ['.', '*']
 
 
+def placeOneStar(gameboard):
+    """ Place one star. Take the gameboard as parameter, and ask for user input for star coordinates.
+    placeOneStar([][]) -> [][]
+    """
+    x = input('Where do you want to put the star on x axis ? : ')
+    y = input('Where do you want to put the star on y axis ? : ')
+    if isInGameboard(x, y, gameboard):
+        gameboard[y][x] = True
+        printBoard(gameboard)
+    else:
+        print('Coordinates are not valid')
+        placeOneStar(gameboard)
+    return gameboard
 
+
+def placeStars(gameboard):
+    printBoard(gameboard)
+    numberOfStars = int(input('How many star do you want to place ? : '))
+    for i in range(numberOfStars):
+        gameboard = placeOneStar(gameboard)
+
+
+def hasImpairNumberOfStars(x, y, gameboard):
+    """ Check all the neighbors if they are star. Increment numberOfNeighborsStars if they are.
+    Return true if there is an impair number of neighbors, false otherwise.
+    checkNeighbors(int, int, [][]) -> Boolean
+    """
+    neighbors = [-1, 0, 1]
+    numberOfNeighborsStars = 0
+    for neighborXDif in neighbors:
+        xToTest = x + neighborXDif
+        for neighborYDif in neighbors:
+            yToTest = y + neighborYDif
+            if isInGameboard(xToTest, yToTest, gameboard) and gameboard[yToTest][xToTest]:
+                numberOfNeighborsStars += 1
+    return numberOfNeighborsStars & 1
+
+
+def isPongGameWon(gameboard):
+    for y in range(len(gameboard)):
+        for x in range(len(gameboard[0])):
+            if not hasImpairNumberOfStars(x, y, gameboard):
+                return False
+    return True
+
+
+def playPong():
+    """ Play the game.
+    Recursive function, calling itself if the player continue and didn't win
+    playPing() ->
+    """
+    global gameboard
+    printBoard(gameboard)
+    gameboard = placeStars(gameboard)
+    if isPongGameWon(gameboard) or not getUserWish():
+        return
+    else:
+        playPing()
+
+"""
+
+PING FUNCTIONS
+
+"""
 
 def printBoard(board):
     """ Pretty print the gameboard
-    printBoard([][]) ->
+    The rules argument correspond to format of the board (which character represent True/False values).
+    The first value of the list is the False value, the second is the True value.
+    printBoard([][], []) ->
     """
+    global printRules
     for row in board:
         printedRow = ''
         for value in row:
-            printedRow += ' o ' if value else ' x '
+            printedRow += ' ' + printRules[int(value)] + ' '
         print(printedRow)
 
 
@@ -70,14 +146,6 @@ def getNextMove(width, height):
         getNextMove(width, height)
 
     return {'x': x, 'y': y}
-
-
-def isInGameboard(x, y, gameboard):
-    """ Check if the given coordinates are in the gameboard
-    isInGameboard(int, int, [][]) -> Boolean
-    """
-    return x >= 0 and x < len(gameboard[0]) and y >= 0 and y < len(gameboard)
-
 
 def switchBoardValue(x, y, gameboard):
     """ Switch a board value. When a value is switched, all its neighbor values are switched also
@@ -129,9 +197,10 @@ def setPing():
     The config is persisted in global variables.
     setPing() ->
     """
-    global boardConfig, gameboard
+    global boardConfig, gameboard, printRules
     boardConfig = setBoard()
     gameboard = createGameBoard(boardConfig['width'], boardConfig['height'], True)
+    printRules = ['x', 'o']
 
 
 def playPing():
@@ -148,6 +217,3 @@ def playPing():
         return
     else:
         playPing()
-
-setPing()
-playPing()
