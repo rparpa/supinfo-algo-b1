@@ -6,6 +6,7 @@ _print_rules = []
 
 # COMMON FUNCTIONS
 
+
 def create_game_board(width, height, value):
     """
     Create the game board nested listed with the given width & height
