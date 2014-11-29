@@ -65,8 +65,8 @@ def get_user_wish():
 def print_board(board):
     """
     Pretty print the gameboard
-    The rules argument correspond to format of the board (which character represent True/False values).
-    The first value of the list is the False value, the second is the True value.
+    The _print_rules global corresponds to the format of the board (which character represent True/False values).
+    The first value of the list is the False value representation, the second is the True value representation.
     :param board: list
     :return: none
     """
