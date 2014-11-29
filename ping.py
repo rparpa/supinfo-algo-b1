@@ -3,6 +3,36 @@
 boardConfig = {'width': 0, 'height': 0}
 gameboard = []
 
+"""
+
+COMMON FUNCTIONS
+
+"""
+
+def createGameBoard(width, height, value):
+    """ Create the gameboard nested listed with the given width & height
+    createGameBoard(int, int) -> [][]
+    """
+    gameboard = []
+    for i in range(0, height):
+        column = []
+        for i in range(0, width):
+            column.append(bool(value))
+        gameboard.append(column)
+
+    return gameboard
+
+"""
+
+PING FUNCTIONS
+
+"""
+
+"""
+
+PONG GAME
+
+"""
 
 def setBoard():
     """ Prompt the user to set the width and height of the board
@@ -14,18 +44,7 @@ def setBoard():
     return {'width': width, 'height': height}
 
 
-def createGameBoard(width, height):
-    """ Create the gameboard nested listed with the given width & height
-    createGameBoard(int, int) -> [][]
-    """
-    gameboard = []
-    for i in range(0, height):
-        column = []
-        for i in range(0, width):
-            column.append(True)
-        gameboard.append(column)
 
-    return gameboard
 
 
 def printBoard(board):
@@ -112,7 +131,7 @@ def setPing():
     """
     global boardConfig, gameboard
     boardConfig = setBoard()
-    gameboard = createGameBoard(boardConfig['width'], boardConfig['height'])
+    gameboard = createGameBoard(boardConfig['width'], boardConfig['height'], True)
 
 
 def playPing():
