@@ -41,11 +41,16 @@ def switchBoardValue (x, y, gameboard) :
 		xToTest = x + neighborXDif
 		for neighborYDif in neighbors :
 			yToTest = y + neighborYDif
-			print (neighborXDif)
-			print (neighborYDif)
 			if isInGameboard(xToTest, yToTest, gameboard) :
 				gameboard[yToTest][xToTest] = False if gameboard[yToTest][xToTest] else True
 	return gameboard
+
+def isGameWon(gameboard) :
+	for row in gameboard :
+		for value in row :
+			if value != True :
+				return False
+	return True
 
 boardConfig = setBoard()
 gameboard = createGameBoard(boardConfig['width'], boardConfig['height'])
@@ -53,3 +58,4 @@ printBoard(gameboard)
 myMove = getNextMove(boardConfig['width'], boardConfig['height'])
 gameboard = switchBoardValue(myMove['x'], myMove['y'], gameboard)
 printBoard(gameboard)
+print(isGameWon(gameboard))
