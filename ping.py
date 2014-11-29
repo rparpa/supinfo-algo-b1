@@ -1,33 +1,33 @@
 #!/usr/bin/python
 
-boardConfig = {'width': 0, 'height': 0}
-gameboard = []
-printRules = []
+_board_config = {'width': 0, 'height': 0}
+_game_board = []
+_print_rules = []
 
-"""
+# COMMON FUNCTIONS
 
-COMMON FUNCTIONS
-
-"""
-
-
-def createGameBoard(width, height, value):
-    """ Create the gameboard nested listed with the given width & height
-    createGameBoard(int, int) -> [][]
+def create_game_board(width, height, value):
     """
-    gameboard = []
+    Create the game board nested listed with the given width & height
+    :param width:  int
+    :param height: int
+    :param value:  boolean
+    :return: list
+    """
+    game_board = []
     for i in range(0, height):
         column = []
         for i in range(0, width):
             column.append(bool(value))
-        gameboard.append(column)
+        game_board.append(column)
 
-    return gameboard
+    return game_board
 
 
-def setBoard():
-    """ Prompt the user to set the width and height of the board
-    setBoard() -> {'width': int, 'height': int}
+def set_board():
+    """
+    Prompt the user to set the width and height of the board
+    :return: dictionary
     """
     width = int(input('Set board width : '))
     height = int(input('Set board height : '))
@@ -35,169 +35,192 @@ def setBoard():
     return {'width': width, 'height': height}
 
 
-def isInGameboard(x, y, gameboard):
-    """ Check if the given coordinates are in the gameboard
-    isInGameboard(int, int, [][]) -> Boolean
+def is_in_game_board(x, y, game_board):
     """
-    return 0 <= x < len(gameboard[0]) and 0 <= y < len(gameboard)
+    Check if the given coordinates are in the game board
+    :param x:           int
+    :param y:           int
+    :param game_board:  list
+    :return: list
+    """
+    return 0 <= x < len(game_board[0]) and 0 <= y < len(game_board)
 
 
-def getUserWish():
-    """ Prompt the user to know if he wants to continue.
+def get_user_wish():
+    """
+    Prompt the user to know if he wants to continue.
     Flame him if he quits.
-    getUserWish() -> Boolean
+    :return: boolean
     """
-    userWish = str(input('Do you want to continue y or n: '))
-    if userWish == "y":
+    user_wish = str(input('Do you want to continue y or n: '))
+    if user_wish == "y":
         return True
-    elif userWish == "n":
+    elif user_wish == "n":
         print('Sacre Hubert, toujours le mot pour rire')
         return False
     else:
-        return getUserWish()
+        return get_user_wish()
 
 
-def printBoard(board):
-    """ Pretty print the gameboard
+def print_board(board):
+    """
+    Pretty print the gameboard
     The rules argument correspond to format of the board (which character represent True/False values).
     The first value of the list is the False value, the second is the True value.
-    printBoard([][], []) ->
+    :param board: list
+    :return: none
     """
-    global printRules
+    global _print_rules
     for row in board:
-        printedRow = ''
+        printed_row = ''
         for value in row:
-            printedRow += ' ' + printRules[int(value)] + ' '
-        print(printedRow)
+            printed_row += ' ' + _print_rules[int(value)] + ' '
+        print(printed_row)
 
-"""
+# PONG GAME
 
-PONG GAME
-
-"""
-
-
-def setPong():
-    """ Set pong game
-    setPong() ->
+def set_pong():
     """
-    global boardConfig, gameboard, printRules
-    boardConfig = setBoard()
-    gameboard = createGameBoard(boardConfig['width'], boardConfig['height'], False)
-    printRules = ['.', '*']
+    Set pong game
+    :return: none
+    """
+    global _board_config, _game_board, _print_rules
+    _board_config = set_board()
+    _game_board = create_game_board(_board_config['width'], _board_config['height'], False)
+    _print_rules = ['.', '*']
 
 
-def placeOneStar(gameboard):
-    """ Place one star. Take the gameboard as parameter, and ask for user input for star coordinates.
-    placeOneStar([][]) -> [][]
+def place_one_star(game_board):
+    """
+    Place one star. Take the gameboard as parameter, and ask for user input for star coordinates.
+    :param game_board: list
+    :return: list
     """
     x = int(input('Where do you want to put the star on x axis ? : '))
     y = int(input('Where do you want to put the star on y axis ? : '))
-    if isInGameboard(x, y, gameboard):
-        gameboard[y][x] = True
-        printBoard(gameboard)
+    if is_in_game_board(x, y, game_board):
+        game_board[y][x] = True
+        print_board(game_board)
     else:
         print('Coordinates are not valid')
-        return placeOneStar(gameboard)
-    return gameboard
+        return place_one_star(game_board)
+    return game_board
 
 
-def placeStars(gameboard):
-    numberOfStars = int(input('How many star do you want to place ? : '))
-    for i in range(numberOfStars):
-        gameboard = placeOneStar(gameboard)
-    return gameboard
+def place_stars(game_board):
+    """
+    Place a star on the board at the given coordinates.
+    :param game_board: list
+    :return: list
+    """
+    number_of_stars = int(input('How many star do you want to place ? : '))
+    for i in range(number_of_stars):
+        game_board = place_one_star(game_board)
+    return game_board
 
 
-def hasImpairNumberOfStars(x, y, gameboard):
-    """ Check all the neighbors if they are star. Increment numberOfNeighborsStars if they are.
+def has_impair_number_of_stars(x, y, game_board):
+    """
+    Check all the neighbors if they are star. Increment numberOfNeighborsStars if they are.
     Return true if there is an impair number of neighbors, false otherwise.
-    checkNeighbors(int, int, [][]) -> Boolean
+    :param x:          int
+    :param y:          int
+    :param game_board: list
+    :return: boolean
     """
     neighbors = [-1, 0, 1]
-    numberOfNeighborsStars = 0
+    number_of_neighbors_stars = 0
     for neighborXDif in neighbors:
-        xToTest = x + neighborXDif
+        x_to_test = x + neighborXDif
         for neighborYDif in neighbors:
-            yToTest = y + neighborYDif
-            isCurrentTile = neighborXDif == 0 and neighborYDif == 0
-            if isInGameboard(xToTest, yToTest, gameboard) and gameboard[yToTest][xToTest] and not isCurrentTile:
-                numberOfNeighborsStars += 1
-    return numberOfNeighborsStars & 1
+            y_to_test = y + neighborYDif
+            is_current_tile = neighborXDif == 0 and neighborYDif == 0
+            if is_in_game_board(x_to_test, y_to_test, game_board) and game_board[y_to_test][x_to_test]:
+                if not is_current_tile:
+                    number_of_neighbors_stars += 1
+    return number_of_neighbors_stars & 1
 
 
-def isPongGameWon(gameboard):
-    """ Check all value of the gameboard, and check if there is an impair number of stars next to it.
-    isPongGameWon([][]) -> Boolean
+def is_pong_game_won(game_board):
     """
-    for y in range(len(gameboard)):
-        for x in range(len(gameboard[0])):
-            if not hasImpairNumberOfStars(x, y, gameboard):
+    Check all value of the gameboard, and check if there is an impair number of stars next to it.
+    :param game_board: list
+    :return: boolean
+    """
+    for y in range(len(game_board)):
+        for x in range(len(game_board[0])):
+            if not has_impair_number_of_stars(x, y, game_board):
                 print('Nop, sorry')
                 return False
     print('You rules')
     return True
 
 
-def playPong():
-    """ Play the game.
-    Recursive function, calling itself if the player continue and didn't win
-    playPing() ->
+def play_pong():
     """
-    global gameboard
-    printBoard(gameboard)
-    gameboard = placeStars(gameboard)
-    if isPongGameWon(gameboard) or not getUserWish():
+    Play the game.
+    Recursive function, calling itself if the player continue and didn't win
+    :return: none
+    """
+    global _game_board
+    print_board(_game_board)
+    _game_board = place_stars(_game_board)
+    if is_pong_game_won(_game_board) or not get_user_wish():
         return
     else:
-        setPong()
-        playPong()
+        set_pong()
+        play_pong()
 
 
-"""
-
-PING FUNCTIONS
-
-"""
+# PING FUNCTIONS
 
 
-def getNextMove(width, height):
-    """ Prompt the user to get his next move
-    getNextMove(int, int) -> {'x' => int, 'y' => int}
+def get_next_move(width, height):
+    """
+    Prompt the user to get his next move
+    :param width:  int
+    :param height: int
+    :return: dictionary
     """
     x = int(input('Where to put on x axis (0 >= x < %d)' % width))
     if x < 0 or x > width or not isinstance(x, int):
-        return getNextMove(width, height)
+        return get_next_move(width, height)
     y = int(input('Where to put on y axis (0 >= y < %d)' % height))
     if y < 0 or x > height or not isinstance(y, int):
-        return getNextMove(width, height)
+        return get_next_move(width, height)
 
     return {'x': x, 'y': y}
 
 
-def switchBoardValue(x, y, gameboard):
-    """ Switch a board value. When a value is switched, all its neighbor values are switched also
+def switch_board_value(x, y, gameboard):
+    """
+    Switch a board value. When a value is switched, all its neighbor values are switched also
     (but not the value itself).
     The neighbors are all the combinations (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)...
     next to (x, y) coordinates.
-    switchBoardValue(int, int, [][]) -> [][]
+    :param x:         int
+    :param y:         int
+    :param gameboard: list
+    :return: list
     """
     neighbors = [-1, 0, 1]
     for neighborXDif in neighbors:
-        xToTest = x + neighborXDif
+        x_to_test = x + neighborXDif
         for neighborYDif in neighbors:
-            yToTest = y + neighborYDif
-            isCurrentTile = neighborXDif == 0 and neighborYDif == 0
-            if isInGameboard(xToTest, yToTest, gameboard) and not isCurrentTile:
-                gameboard[yToTest][xToTest] = not gameboard[yToTest][xToTest]
+            y_to_test = y + neighborYDif
+            is_current_tile = neighborXDif == 0 and neighborYDif == 0
+            if is_in_game_board(x_to_test, y_to_test, gameboard) and not is_current_tile:
+                gameboard[y_to_test][x_to_test] = not gameboard[y_to_test][x_to_test]
     return gameboard
 
 
-def isGameWon(gameboard):
-    """ Check if the game is won. The game is won when all the values are equals to True
-    isGameWon([][]) -> Boolean
+def is_game_won(game_board):
     """
-    for row in gameboard:
+    Check if the game is won. The game is won when all the values are equals to True.
+    :param game_board: list
+    :return: boolean
+    """
+    for row in game_board:
         for value in row:
             if value:
                 print('Still much to do')
@@ -206,37 +229,39 @@ def isGameWon(gameboard):
     return True
 
 
-def setPing():
-    """ Prompt the user to set the game config.
+def set_ping():
+    """
+    Prompt the user to set the game config.
     The config is persisted in global variables.
-    setPing() ->
+    :return: none
     """
-    global boardConfig, gameboard, printRules
-    boardConfig = setBoard()
-    gameboard = createGameBoard(boardConfig['width'], boardConfig['height'], True)
-    printRules = ['x', 'o']
+    global _board_config, _game_board, _print_rules
+    _board_config = set_board()
+    _game_board = create_game_board(_board_config['width'], _board_config['height'], True)
+    _print_rules = ['x', 'o']
 
 
-def playPing():
-    """ Play the game.
+def play_ping():
+    """
+    Play the game.
     Recursive function, calling itself if the player continue and didn't win
-    playPing() ->
+    :return: none
     """
-    global gameboard
-    printBoard(gameboard)
-    userMove = getNextMove(boardConfig['width'], boardConfig['height'])
-    gameboard = switchBoardValue(userMove['x'], userMove['y'], gameboard)
-    printBoard(gameboard)
-    if isGameWon(gameboard) or not getUserWish():
+    global _game_board
+    print_board(_game_board)
+    user_move = get_next_move(_board_config['width'], _board_config['height'])
+    _game_board = switch_board_value(user_move['x'], user_move['y'], _game_board)
+    print_board(_game_board)
+    if is_game_won(_game_board) or not get_user_wish():
         return
     else:
-        playPing()
+        play_ping()
 
 print('Good evening, infideeeeel')
 gameChoice = int(input('Wich game do you want to play ? 1 : ping, 2 : pong (the one with no name)'))
 if gameChoice == 1:
-    setPing()
-    playPing()
+    set_ping()
+    play_ping()
 else:
-    setPong()
-    playPong()
+    set_pong()
+    play_pong()
