@@ -232,6 +232,11 @@ def playPing():
     else:
         playPing()
 
-
-setPing()
-playPing()
+print('Good evening, infideeeeel')
+gameChoice = int(input('Wich game do you want to play ? 1 : ping, 2 : pong (the one with no name)'))
+if gameChoice == 1:
+    setPing()
+    playPing()
+else:
+    setPong()
+    playPong()
