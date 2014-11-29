@@ -192,7 +192,7 @@ def get_next_move(width, height):
     return {'x': x, 'y': y}
 
 
-def switch_board_value(x, y, gameboard):
+def switch_board_value(x, y, game_board):
     """
     Switch a board value. When a value is switched, all its neighbor values are switched also
     (but not the value itself).
@@ -200,7 +200,7 @@ def switch_board_value(x, y, gameboard):
     next to (x, y) coordinates.
     :param x:         int
     :param y:         int
-    :param gameboard: list
+    :param game_board: list
     :return: list
     """
     neighbors = [-1, 0, 1]
@@ -209,9 +209,9 @@ def switch_board_value(x, y, gameboard):
         for neighborYDif in neighbors:
             y_to_test = y + neighborYDif
             is_current_tile = neighborXDif == 0 and neighborYDif == 0
-            if is_in_game_board(x_to_test, y_to_test, gameboard) and not is_current_tile:
-                gameboard[y_to_test][x_to_test] = not gameboard[y_to_test][x_to_test]
-    return gameboard
+            if is_in_game_board(x_to_test, y_to_test, game_board) and not is_current_tile:
+                game_board[y_to_test][x_to_test] = not game_board[y_to_test][x_to_test]
+    return game_board
 
 
 def is_game_won(game_board):
