@@ -8,12 +8,8 @@ def setBoard():
     """ Prompt the user to set the width and height of the board
     setBoard() -> {'width': int, 'height': int}
     """
-    width = input('Set board width : ')
-    if not isinstance(width, int):
-        setBoard()
-    height = input('Set board height : ')
-    if not isinstance(height, int):
-        setBoard()
+    width = int(input('Set board width : '))
+    height = int(input('Set board height : '))
 
     return {'width': width, 'height': height}
 
@@ -47,10 +43,10 @@ def getNextMove(width, height):
     """ Prompt the user to get his next move
     getNextMove(int, int) -> {'x' => int, 'y' => int}
     """
-    x = input('Where to put on x axis (0 >= y < %d)' % width)
+    x = int(input('Where to put on x axis (0 >= y < %d)' % width))
     if x < 0 or x > width or not isinstance(x, int):
         getNextMove(width, height)
-    y = input('Where to put on y axis (0 >= y < %d)' % height)
+    y = int(input('Where to put on y axis (0 >= y < %d)' % height))
     if y < 0 or x > height or not isinstance(y, int):
         getNextMove(width, height)
 
@@ -97,7 +93,7 @@ def getUserWish():
     Flame him if he quits.
     getUserWish() -> Boolean
     """
-    userWish = raw_input('Do you want to continue y or n: ')
+    userWish = input('Do you want to continue y or n: ')
     if userWish == "y":
         return True
     elif userWish == "n":
