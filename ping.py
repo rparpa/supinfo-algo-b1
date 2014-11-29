@@ -9,10 +9,10 @@ def setBoard():
     setBoard() -> {'width': int, 'height': int}
     """
     width = input('Set board width : ')
-    if (isinstance(width, int) == False):
+    if not isinstance(width, int):
         setBoard()
     height = input('Set board height : ')
-    if (isinstance(height, int) == False):
+    if not isinstance(height, int):
         setBoard()
 
     return {'width': width, 'height': height}
@@ -47,11 +47,11 @@ def getNextMove(width, height):
     """ Prompt the user to get his next move
     getNextMove(int, int) -> {'x' => int, 'y' => int}
     """
-    x = input('Where to put on x axis (0 >= y < %d)' % (width))
-    if x < 0 or x > width or isinstance(x, int) == False:
+    x = input('Where to put on x axis (0 >= y < %d)' % width)
+    if x < 0 or x > width or not isinstance(x, int):
         getNextMove(width, height)
-    y = input('Where to put on y axis (0 >= y < %d)' % (height))
-    if y < 0 or x > height or isinstance(y, int) == False:
+    y = input('Where to put on y axis (0 >= y < %d)' % height)
+    if y < 0 or x > height or not isinstance(y, int):
         getNextMove(width, height)
 
     return {'x': x, 'y': y}
@@ -85,7 +85,7 @@ def isGameWon(gameboard):
     """
     for row in gameboard:
         for value in row:
-            if value != False:
+            if value:
                 print('Still much to do')
                 return False
     print('You won the game.')
@@ -127,7 +127,7 @@ def playPing():
     userMove = getNextMove(boardConfig['width'], boardConfig['height'])
     gameboard = switchBoardValue(userMove['x'], userMove['y'], gameboard)
     printBoard(gameboard)
-    if isGameWon(gameboard) == True or getUserWish() == False:
+    if isGameWon(gameboard) or not getUserWish():
         return
     else:
         playPing()
