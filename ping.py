@@ -39,6 +39,21 @@ def isInGameboard(x, y, gameboard):
     """
     return 0 <= x < len(gameboard[0]) and 0 <= y < len(gameboard)
 
+
+def getUserWish():
+    """ Prompt the user to know if he wants to continue.
+    Flame him if he quits.
+    getUserWish() -> Boolean
+    """
+    userWish = str(input('Do you want to continue y or n: '))
+    if userWish == "y":
+        return True
+    elif userWish == "n":
+        print('Sacre Hubert, toujours le mot pour rire')
+        return False
+    else:
+        return getUserWish()
+
 """
 
 PONG GAME
@@ -59,8 +74,8 @@ def placeOneStar(gameboard):
     """ Place one star. Take the gameboard as parameter, and ask for user input for star coordinates.
     placeOneStar([][]) -> [][]
     """
-    x = input('Where do you want to put the star on x axis ? : ')
-    y = input('Where do you want to put the star on y axis ? : ')
+    x = int(input('Where do you want to put the star on x axis ? : '))
+    y = int(input('Where do you want to put the star on y axis ? : '))
     if isInGameboard(x, y, gameboard):
         gameboard[y][x] = True
         printBoard(gameboard)
@@ -71,10 +86,10 @@ def placeOneStar(gameboard):
 
 
 def placeStars(gameboard):
-    printBoard(gameboard)
     numberOfStars = int(input('How many star do you want to place ? : '))
     for i in range(numberOfStars):
         gameboard = placeOneStar(gameboard)
+    return gameboard
 
 
 def hasImpairNumberOfStars(x, y, gameboard):
@@ -94,10 +109,15 @@ def hasImpairNumberOfStars(x, y, gameboard):
 
 
 def isPongGameWon(gameboard):
+    """ Check all value of the gameboard, and check if there is an impair number of stars next to it.
+    isPongGameWon([][]) -> Boolean
+    """
     for y in range(len(gameboard)):
         for x in range(len(gameboard[0])):
             if not hasImpairNumberOfStars(x, y, gameboard):
+                print('Nop, sorry')
                 return False
+    print('You rules')
     return True
 
 
@@ -112,7 +132,8 @@ def playPong():
     if isPongGameWon(gameboard) or not getUserWish():
         return
     else:
-        playPing()
+        setPong()
+        playPong()
 
 """
 
@@ -177,21 +198,6 @@ def isGameWon(gameboard):
     return True
 
 
-def getUserWish():
-    """ Prompt the user to know if he wants to continue.
-    Flame him if he quits.
-    getUserWish() -> Boolean
-    """
-    userWish = input('Do you want to continue y or n: ')
-    if userWish == "y":
-        return True
-    elif userWish == "n":
-        print('Sacre Hubert, toujours le mot pour rire')
-        return False
-    else:
-        return getUserWish()
-
-
 def setPing():
     """ Prompt the user to set the game config.
     The config is persisted in global variables.
@@ -217,3 +223,6 @@ def playPing():
         return
     else:
         playPing()
+
+setPong()
+playPong()
