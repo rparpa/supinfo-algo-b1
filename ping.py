@@ -43,7 +43,7 @@ def getNextMove(width, height):
     """ Prompt the user to get his next move
     getNextMove(int, int) -> {'x' => int, 'y' => int}
     """
-    x = int(input('Where to put on x axis (0 >= y < %d)' % width))
+    x = int(input('Where to put on x axis (0 >= x < %d)' % width))
     if x < 0 or x > width or not isinstance(x, int):
         getNextMove(width, height)
     y = int(input('Where to put on y axis (0 >= y < %d)' % height))
@@ -61,8 +61,10 @@ def isInGameboard(x, y, gameboard):
 
 
 def switchBoardValue(x, y, gameboard):
-    """ Switch a board value. When a value is switched, all its neighbor values are switched also.
-    The neighbors are all the combinaisons (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)... next to (x, y) coordinates.
+    """ Switch a board value. When a value is switched, all its neighbor values are switched also
+    (but not the value itself).
+    The neighbors are all the combinations (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)...
+    next to (x, y) coordinates.
     switchBoardValue(int, int, [][]) -> [][]
     """
     neighbors = [-1, 0, 1]
@@ -71,7 +73,7 @@ def switchBoardValue(x, y, gameboard):
         for neighborYDif in neighbors:
             yToTest = y + neighborYDif
             if isInGameboard(xToTest, yToTest, gameboard) and not (xToTest == 0 and yToTest == 0):
-                gameboard[yToTest][xToTest] = False if gameboard[yToTest][xToTest] else True
+                gameboard[yToTest][xToTest] = not gameboard[yToTest][xToTest]
     return gameboard
 
 
