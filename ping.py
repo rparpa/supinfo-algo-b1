@@ -71,5 +71,4 @@ gameboard = switchBoardValue(myMove['x'], myMove['y'], gameboard)
 printBoard(gameboard)
 
 print(isGameWon(gameboard))
-print('Fin du Test')
 getUserWish()
