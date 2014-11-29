@@ -10,6 +10,7 @@ COMMON FUNCTIONS
 
 """
 
+
 def createGameBoard(width, height, value):
     """ Create the gameboard nested listed with the given width & height
     createGameBoard(int, int) -> [][]
@@ -33,6 +34,7 @@ def setBoard():
 
     return {'width': width, 'height': height}
 
+
 def isInGameboard(x, y, gameboard):
     """ Check if the given coordinates are in the gameboard
     isInGameboard(int, int, [][]) -> Boolean
@@ -54,11 +56,26 @@ def getUserWish():
     else:
         return getUserWish()
 
+
+def printBoard(board):
+    """ Pretty print the gameboard
+    The rules argument correspond to format of the board (which character represent True/False values).
+    The first value of the list is the False value, the second is the True value.
+    printBoard([][], []) ->
+    """
+    global printRules
+    for row in board:
+        printedRow = ''
+        for value in row:
+            printedRow += ' ' + printRules[int(value)] + ' '
+        print(printedRow)
+
 """
 
 PONG GAME
 
 """
+
 
 def setPong():
     """ Set pong game
@@ -136,24 +153,12 @@ def playPong():
         setPong()
         playPong()
 
+
 """
 
 PING FUNCTIONS
 
 """
-
-def printBoard(board):
-    """ Pretty print the gameboard
-    The rules argument correspond to format of the board (which character represent True/False values).
-    The first value of the list is the False value, the second is the True value.
-    printBoard([][], []) ->
-    """
-    global printRules
-    for row in board:
-        printedRow = ''
-        for value in row:
-            printedRow += ' ' + printRules[int(value)] + ' '
-        print(printedRow)
 
 
 def getNextMove(width, height):
@@ -168,6 +173,7 @@ def getNextMove(width, height):
         getNextMove(width, height)
 
     return {'x': x, 'y': y}
+
 
 def switchBoardValue(x, y, gameboard):
     """ Switch a board value. When a value is switched, all its neighbor values are switched also
@@ -225,6 +231,7 @@ def playPing():
         return
     else:
         playPing()
+
 
 setPing()
 playPing()
