@@ -103,7 +103,8 @@ def hasImpairNumberOfStars(x, y, gameboard):
         xToTest = x + neighborXDif
         for neighborYDif in neighbors:
             yToTest = y + neighborYDif
-            if isInGameboard(xToTest, yToTest, gameboard) and gameboard[yToTest][xToTest]:
+            isCurrentTile = neighborXDif == 0 and neighborYDif == 0
+            if isInGameboard(xToTest, yToTest, gameboard) and gameboard[yToTest][xToTest] and not isCurrentTile:
                 numberOfNeighborsStars += 1
     return numberOfNeighborsStars & 1
 
@@ -180,7 +181,8 @@ def switchBoardValue(x, y, gameboard):
         xToTest = x + neighborXDif
         for neighborYDif in neighbors:
             yToTest = y + neighborYDif
-            if isInGameboard(xToTest, yToTest, gameboard) and not (xToTest == 0 and yToTest == 0):
+            isCurrentTile = neighborXDif == 0 and neighborYDif == 0
+            if isInGameboard(xToTest, yToTest, gameboard) and not isCurrentTile:
                 gameboard[yToTest][xToTest] = not gameboard[yToTest][xToTest]
     return gameboard
 
@@ -224,5 +226,5 @@ def playPing():
     else:
         playPing()
 
-setPong()
-playPong()
+setPing()
+playPing()
