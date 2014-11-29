@@ -98,7 +98,7 @@ def placeOneStar(gameboard):
         printBoard(gameboard)
     else:
         print('Coordinates are not valid')
-        placeOneStar(gameboard)
+        return placeOneStar(gameboard)
     return gameboard
 
 
@@ -167,10 +167,10 @@ def getNextMove(width, height):
     """
     x = int(input('Where to put on x axis (0 >= x < %d)' % width))
     if x < 0 or x > width or not isinstance(x, int):
-        getNextMove(width, height)
+        return getNextMove(width, height)
     y = int(input('Where to put on y axis (0 >= y < %d)' % height))
     if y < 0 or x > height or not isinstance(y, int):
-        getNextMove(width, height)
+        return getNextMove(width, height)
 
     return {'x': x, 'y': y}
 
