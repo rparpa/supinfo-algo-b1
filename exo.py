@@ -52,6 +52,17 @@ def isGameWon(gameboard) :
 				return False
 	return True
 
+def getUserWish() :
+	userWish = raw_input('Do you want to continue y or n: ')
+	if userWish == "y" :
+		return True
+	elif userWish == "n" :
+		print('Sacre Hubert, toujours le mot pour rire')
+		return False
+	else :
+		return getUserWish()
+
+
 boardConfig = setBoard()
 gameboard = createGameBoard(boardConfig['width'], boardConfig['height'])
 printBoard(gameboard)
@@ -59,3 +70,5 @@ myMove = getNextMove(boardConfig['width'], boardConfig['height'])
 gameboard = switchBoardValue(myMove['x'], myMove['y'], gameboard)
 printBoard(gameboard)
 print(isGameWon(gameboard))
+getUserWish()
+
