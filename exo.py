@@ -7,11 +7,18 @@ boardConfig = setBoard()
 
 def createGameBoard(width, height) :
 	gameboard = [];
-	for i in range(0, width) :
+	for i in range(0, height) :
 		column = []
-		for i in range(0, height) :
+		for i in range(0, width) :
 			column.append(True)
 		gameboard.append(column)
 	return gameboard
 
-print(createGameBoard(boardConfig['width'], boardConfig['height']))
+def printBoard(board) :
+	for row in board :
+		printedRow = ''
+		for value in row :
+			printedRow += ' o ' if value else ' x '
+		print(printedRow)
+
+printBoard(createGameBoard(boardConfig['width'], boardConfig['height']))
