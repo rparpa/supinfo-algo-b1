@@ -78,6 +78,25 @@ def print_board(board):
             printed_row += ' ' + _print_rules[int(value)] + ' '
         print(printed_row)
 
+
+def neighbors(x, y, game_board):
+    """
+    Generate the neighbors positions for the given coordinates on the game board
+    The neighbors are all the combinations (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)... next to (x, y)
+    coordinates.
+    :param x: int
+    :param y: int
+    :param game_board: list
+    :return: dictionary
+    """
+    x_y_shift = [-1, 0, 1]
+    for neighborXDif in x_y_shift:
+        for neighborYDif in x_y_shift:
+            is_current_tile = neighborXDif == 0 and neighborYDif == 0
+            if not is_current_tile and is_in_game_board(x + neighborXDif, y + neighborYDif, game_board):
+                yield {'x': x + neighborXDif, 'y': y + neighborYDif}
+
+
 # PONG GAME
 
 def set_pong():
@@ -120,6 +139,17 @@ def place_stars(game_board):
     return game_board
 
 
+def is_star(x, y, game_board):
+    """
+    Return true if the tile is a star (star are mapped with True value in the game)
+    :param x: int
+    :param y: int
+    :param game_board: list
+    :return: boolean
+    """
+    return game_board[x][y]
+
+
 def has_impair_number_of_stars(x, y, game_board):
     """
     Check all the neighbors if they are star. Increment numberOfNeighborsStars if they are.
@@ -129,16 +159,11 @@ def has_impair_number_of_stars(x, y, game_board):
     :param game_board: list
     :return: boolean
     """
-    neighbors = [-1, 0, 1]
     number_of_neighbors_stars = 0
-    for neighborXDif in neighbors:
-        x_to_test = x + neighborXDif
-        for neighborYDif in neighbors:
-            y_to_test = y + neighborYDif
-            is_current_tile = neighborXDif == 0 and neighborYDif == 0
-            if is_in_game_board(x_to_test, y_to_test, game_board) and game_board[y_to_test][x_to_test]:
-                if not is_current_tile:
-                    number_of_neighbors_stars += 1
+    for neighbor_coordinates in neighbors(x, y, game_board):
+        if is_star(neighbor_coordinates['x'], neighbor_coordinates['y'], game_board):
+            number_of_neighbors_stars += 1
+    # odd bitwise AND 1 returns true, false if even
     return number_of_neighbors_stars & 1
 
 
@@ -197,8 +222,6 @@ def switch_board_value(x, y, game_board):
     """
     Switch a board value. When a value is switched, all its neighbor values are switched also
     (but not the value itself).
-    The neighbors are all the combinations (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)...
-    next to (x, y) coordinates.
     :param x:         int
     :param y:         int
     :param game_board: list
