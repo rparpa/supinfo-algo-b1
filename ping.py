@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 _board_config = {'width': 0, 'height': 0}
 _game_board = []
@@ -79,7 +79,7 @@ def print_board(board):
         print(printed_row)
 
 
-def neighbors(x, y, game_board):
+def tile_neighbors(x, y, game_board):
     """
     Generate the neighbors positions for the given coordinates on the game board
     The neighbors are all the combinations (-1 + x, -1 + y), (-1 + x, 0 + y), (-1 + x, 1 + y)... next to (x, y)
@@ -160,8 +160,8 @@ def has_impair_number_of_stars(x, y, game_board):
     :return: boolean
     """
     number_of_neighbors_stars = 0
-    for neighbor_coordinates in neighbors(x, y, game_board):
-        if is_star(neighbor_coordinates['x'], neighbor_coordinates['y'], game_board):
+    for neighbor in tile_neighbors(x, y, game_board):
+        if is_star(neighbor['x'], neighbor['y'], game_board):
             number_of_neighbors_stars += 1
     # odd bitwise AND 1 returns true, false if even
     return number_of_neighbors_stars & 1
@@ -227,14 +227,9 @@ def switch_board_value(x, y, game_board):
     :param game_board: list
     :return: list
     """
-    neighbors = [-1, 0, 1]
-    for neighborXDif in neighbors:
-        x_to_test = x + neighborXDif
-        for neighborYDif in neighbors:
-            y_to_test = y + neighborYDif
-            is_current_tile = neighborXDif == 0 and neighborYDif == 0
-            if is_in_game_board(x_to_test, y_to_test, game_board) and not is_current_tile:
-                game_board[y_to_test][x_to_test] = not game_board[y_to_test][x_to_test]
+    for neighbor in tile_neighbors(x, y, game_board):
+        game_board[neighbor['y']][neighbor['x']] = not game_board[neighbor['y']][neighbor['x']]
+
     return game_board
 
 
