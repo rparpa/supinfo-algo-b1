@@ -193,19 +193,18 @@ def play_pong():
 # PING FUNCTIONS
 
 
-def get_next_move(width, height):
+def get_next_move():
     """
     Prompt the user to get his next move
-    :param width:  int
-    :param height: int
     :return: dictionary
     """
-    x = int(input('Where to put on x axis (0 >= x < %d)' % width))
-    if x < 0 or x > width or not isinstance(x, int):
-        return get_next_move(width, height)
-    y = int(input('Where to put on y axis (0 >= y < %d)' % height))
-    if y < 0 or x > height or not isinstance(y, int):
-        return get_next_move(width, height)
+    global _game_board
+    global _board_config
+    x = int(input('Where to put on x axis (0 >= x < %d)' % _board_config['width']))
+    y = int(input('Where to put on y axis (0 >= y < %d)' % _board_config['height']))
+    if not is_in_game_board(x, y, _game_board):
+        print('Not in game board')
+        return get_next_move()
 
     return {'x': x, 'y': y}
 
@@ -260,7 +259,7 @@ def play_ping():
     """
     global _game_board
     print_board(_game_board)
-    user_move = get_next_move(_board_config['width'], _board_config['height'])
+    user_move = get_next_move()
     _game_board = switch_board_value(user_move['x'], user_move['y'], _game_board)
     print_board(_game_board)
     if is_game_won(_game_board) or not get_user_wish():
