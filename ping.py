@@ -15,14 +15,7 @@ def create_game_board(width, height, value):
     :param value:  boolean
     :return: list
     """
-    game_board = []
-    for i in range(0, height):
-        column = []
-        for i in range(0, width):
-            column.append(bool(value))
-        game_board.append(column)
-
-    return game_board
+    return [[value] * width for i in range(height)]
 
 
 def set_board():
@@ -89,9 +82,8 @@ def tile_neighbors(x, y, game_board):
     :param game_board: list
     :return: dictionary
     """
-    x_y_shift = [-1, 0, 1]
-    for neighborXDif in x_y_shift:
-        for neighborYDif in x_y_shift:
+    for neighborXDif in range(-1, 2):
+        for neighborYDif in range(-1, 2):
             is_current_tile = neighborXDif == 0 and neighborYDif == 0
             if not is_current_tile and is_in_game_board(x + neighborXDif, y + neighborYDif, game_board):
                 yield {'x': x + neighborXDif, 'y': y + neighborYDif}
